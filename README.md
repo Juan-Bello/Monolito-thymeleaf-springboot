@@ -2,6 +2,12 @@
 
 Monolito Spring Boot + Thymeleaf para gestionar el préstamo de libros: catálogo de libros, registro de estudiantes, solicitud de préstamos con reglas de negocio y registro de devoluciones con cálculo de mora.
 
+## Integrantes
+
+- Juan Bello
+- Camila Montealegre
+- Mateo Guerra
+
 ## Stack
 
 - Java 21, Spring Boot 4.0.2 (Web MVC, Thymeleaf, Data JPA, Validation)
