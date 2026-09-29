@@ -76,17 +76,3 @@ docker compose up
 | GET | `/prestamos` | Listado de préstamos (estado, mora, acciones) |
 | GET/POST | `/prestamos/nuevo` | Formulario / solicitud de préstamo |
 | POST | `/prestamos/{id}/devolver` | Registrar devolución |
-
-## Estructura
-
-```
-src/main/java/co/javeriana/dw/biblioteca
-├── model/          Libro, Estudiante, Prestamo, EstadoPrestamo
-├── repository/     Spring Data JPA (Libro, Estudiante, Prestamo)
-├── service/        Reglas de negocio transaccionales (préstamo, devolución, vencidos)
-├── controller/     Controladores MVC + PrestamoForm (backing object)
-├── exception/      NegocioException (violaciones de reglas de negocio)
-├── BibliotecaApplication      (+ @EnableScheduling)
-└── ServletInitializer         (despliegue WAR en Tomcat)
-src/main/resources/templates/  Vistas Thymeleaf + fragments/ (header, footer)
-```
