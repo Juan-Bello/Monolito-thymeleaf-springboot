@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Préstamos — Biblioteca Universitaria</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h2>Préstamos</h2>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${warningMessage}" class="alert alert-warning" th:text="${warningMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <a class="btn" th:href="@{/prestamos/nuevo}">Nuevo préstamo</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Libro</th>
+            <th>Estudiante</th>
+            <th>Fecha de préstamo</th>
+            <th>Fecha límite</th>
+            <th>Estado</th>
+            <th>Mora</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="prestamo : ${prestamos}">
+            <td th:text="${prestamo.libro.titulo}"></td>
+            <td th:text="${prestamo.estudiante.nombre} + ' (' + ${prestamo.estudiante.codigo} + ')'"></td>
+            <td th:text="${#temporals.format(prestamo.fechaPrestamo, 'dd/MM/yyyy')}"></td>
+            <td th:text="${#temporals.format(prestamo.fechaLimite, 'dd/MM/yyyy')}"></td>
+            <td>
+                <span class="badge"
+                      th:classappend="${prestamo.estado.name() == 'DEVUELTO'} ? 'badge-success' : (${prestamo.estado.name() == 'VENCIDO'} ? 'badge-danger' : 'badge-warning')"
+                      th:text="${prestamo.estado.descripcion}"></span>
+            </td>
+            <td th:text="${prestamo.moraDias != null ? prestamo.moraDias + ' día(s)' : '—'}"></td>
+            <td>
+                <form th:if="${prestamo.estado.name() != 'DEVUELTO'}"
+                      th:action="@{/prestamos/{id}/devolver(id=${prestamo.id})}"
+                      method="post">
+                    <button type="submit" class="btn btn-small">Devolver</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(prestamos)}">
+            <td colspan="7" class="empty">No hay préstamos registrados.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="header">
+
+    <h1>Biblioteca Universitaria</h1>
+
+    <nav class="tabs">
+        <a class="tab-button"
+           th:classappend="${activeTab == 'libros'} ? ' active' : ''"
+           th:href="@{/libros}">Libros</a>
+        <a class="tab-button"
+           th:classappend="${activeTab == 'estudiantes'} ? ' active' : ''"
+           th:href="@{/estudiantes}">Estudiantes</a>
+        <a class="tab-button"
+           th:classappend="${activeTab == 'prestamos'} ? ' active' : ''"
+           th:href="@{/prestamos}">Préstamos</a>
+    </nav>
+
+</header>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Libros — Biblioteca Universitaria</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h2>Catálogo de Libros</h2>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <a class="btn" th:href="@{/libros/nuevo}">Nuevo libro</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>ISBN</th>
+            <th>Ejemplares disponibles</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="libro : ${libros}">
+            <td th:text="${libro.titulo}"></td>
+            <td th:text="${libro.autor}"></td>
+            <td th:text="${libro.isbn}"></td>
+            <td>
+                <span th:text="${libro.cantidadDisponible}"></span>
+                / <span th:text="${libro.cantidadTotal}"></span>
+                <span th:if="${libro.cantidadDisponible == 0}" class="badge badge-warning">Agotado</span>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(libros)}">
+            <td colspan="4" class="empty">No hay libros registrados.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

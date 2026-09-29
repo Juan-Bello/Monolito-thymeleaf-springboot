@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo libro — Biblioteca Universitaria</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h2>Registrar Libro</h2>
+
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/libros}" th:object="${libro}" method="post">
+        <div class="form-group">
+            <label for="titulo">Título</label>
+            <input type="text" id="titulo" th:field="*{titulo}">
+            <span class="field-error" th:if="${#fields.hasErrors('titulo')}" th:errors="*{titulo}"></span>
+        </div>
+        <div class="form-group">
+            <label for="autor">Autor</label>
+            <input type="text" id="autor" th:field="*{autor}">
+            <span class="field-error" th:if="${#fields.hasErrors('autor')}" th:errors="*{autor}"></span>
+        </div>
+        <div class="form-group">
+            <label for="isbn">ISBN</label>
+            <input type="text" id="isbn" th:field="*{isbn}">
+            <span class="field-error" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}"></span>
+        </div>
+        <div class="form-group">
+            <label for="cantidadTotal">Cantidad de ejemplares</label>
+            <input type="number" id="cantidadTotal" th:field="*{cantidadTotal}" min="1">
+            <span class="field-error" th:if="${#fields.hasErrors('cantidadTotal')}" th:errors="*{cantidadTotal}"></span>
+        </div>
+        <button type="submit" class="btn">Guardar</button>
+        <a class="btn btn-secondary" th:href="@{/libros}">Cancelar</a>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo estudiante — Biblioteca Universitaria</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h2>Registrar Estudiante</h2>
+
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <form th:action="@{/estudiantes}" th:object="${estudiante}" method="post">
+        <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" th:field="*{nombre}">
+            <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+        </div>
+        <div class="form-group">
+            <label for="codigo">Código</label>
+            <input type="text" id="codigo" th:field="*{codigo}">
+            <span class="field-error" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></span>
+        </div>
+        <div class="form-group">
+            <label for="correo">Correo</label>
+            <input type="email" id="correo" th:field="*{correo}">
+            <span class="field-error" th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"></span>
+            <span class="field-error" id="correoLiveError" style="display: none;"></span>
+        </div>
+        <button type="submit" class="btn" id="submitBtn">Guardar</button>
+        <a class="btn btn-secondary" th:href="@{/estudiantes}">Cancelar</a>
+    </form>
+</main>
+
+<script>
+    // Validación en vivo del correo mientras se escribe
+    (function () {
+        const correo = document.getElementById('correo');
+        const error = document.getElementById('correoLiveError');
+        const submitBtn = document.getElementById('submitBtn');
+        const patron = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function validar() {
+            const valor = correo.value.trim();
+            if (valor !== '' && !patron.test(valor)) {
+                error.textContent = 'El formato del correo no es válido (ejemplo: nombre@dominio.com)';
+                error.style.display = 'block';
+                correo.classList.add('invalid');
+                submitBtn.disabled = true;
+                return false;
+            }
+            error.style.display = 'none';
+            correo.classList.remove('invalid');
+            submitBtn.disabled = false;
+            return true;
+        }
+
+        correo.addEventListener('input', validar);
+        validar();
+    })();
+</script>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

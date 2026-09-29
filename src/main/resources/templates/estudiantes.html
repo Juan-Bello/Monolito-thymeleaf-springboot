@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Estudiantes — Biblioteca Universitaria</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h2>Estudiantes Registrados</h2>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+
+    <a class="btn" th:href="@{/estudiantes/nuevo}">Nuevo estudiante</a>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Código</th>
+            <th>Correo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estudiante : ${estudiantes}">
+            <td th:text="${estudiante.nombre}"></td>
+            <td th:text="${estudiante.codigo}"></td>
+            <td th:text="${estudiante.correo}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(estudiantes)}">
+            <td colspan="3" class="empty">No hay estudiantes registrados.</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

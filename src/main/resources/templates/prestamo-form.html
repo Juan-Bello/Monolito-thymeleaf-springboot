@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo préstamo — Biblioteca Universitaria</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<main>
+    <h2>Solicitar Préstamo</h2>
+
+    <div th:if="${errorMessage}" class="alert alert-error" th:text="${errorMessage}"></div>
+    <div th:if="${#lists.isEmpty(libros)}" class="alert alert-warning">
+        No hay libros con ejemplares disponibles. Registre un libro primero desde la sección Libros.
+    </div>
+
+    <form th:action="@{/prestamos}" th:object="${prestamoForm}" method="post">
+        <div class="form-group">
+            <label for="libroId">Libro</label>
+            <select id="libroId" th:field="*{libroId}">
+                <option value="">— Seleccione un libro —</option>
+                <option th:each="libro : ${libros}"
+                        th:value="${libro.id}"
+                        th:text="${libro.titulo + ' — ' + libro.autor + ' (' + libro.cantidadDisponible + ' disponibles)'}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="estudianteId">Estudiante</label>
+            <select id="estudianteId" th:field="*{estudianteId}">
+                <option value="">— Seleccione un estudiante —</option>
+                <option th:each="estudiante : ${estudiantes}"
+                        th:value="${estudiante.id}"
+                        th:text="${estudiante.nombre + ' — ' + estudiante.codigo}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn">Registrar préstamo</button>
+        <a class="btn btn-secondary" th:href="@{/prestamos}">Cancelar</a>
+    </form>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+</body>
+</html>

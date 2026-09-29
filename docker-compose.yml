@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:16
+    container_name: biblioteca_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: biblioteca
+      POSTGRES_USER: bibliotecauser
+      POSTGRES_PASSWORD: bibliotecasecret
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: biblioteca_app
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    environment:
+      # spring will pick these up via placeholders in application.properties
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/biblioteca
+      SPRING_DATASOURCE_USERNAME: bibliotecauser
+      SPRING_DATASOURCE_PASSWORD: bibliotecasecret
+      SPRING_DATASOURCE_DRIVER: org.postgresql.Driver
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
+    # rebuild every time since using mvnw
+    command: ["./mvnw","spring-boot:run"]
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: biblioteca_pgadmin
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  db_data:
+  pgadmin_data:
